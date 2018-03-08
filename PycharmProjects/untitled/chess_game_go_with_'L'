@@ -1,0 +1,36 @@
+class solution():
+    def __init__(self):
+        self.move = [[4, 6], [6, 8], [7, 9], [4, 8], [3, 9, 0], [], [1, 7, 0], [2, 6], [1, 3], [2, 4]]
+    def dialNum(self, n):
+        self.count = 0
+        self.num = []
+        def dfs(p,tmp):
+            if p == n:
+                self.count+=1
+                print tmp
+                return
+
+            if not p:
+                self.num.append(1)
+                dfs(p+1,tmp+[1])
+                del self.num[p]
+            else:
+                for i in self.move[self.num[-1]]:
+                    self.num.append(i)
+                    dfs(p+1, tmp+[i])
+                    del self.num[p]
+        dfs(0,[])
+        return self.count
+
+    def dialNumdp(self,n):
+        dp = [[0]*10 for _ in range(n+1)]
+        dp[1][1] = 1
+        for i in range(2,n+1):
+            for j in range(10):
+                for k in self.move[j]:
+                    dp[i][j] += dp[i-1][k]
+        return sum(dp[-1])
+
+case = solution()
+print case.dialNumdp(29)
+
